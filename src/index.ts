@@ -21,12 +21,12 @@ import fs from 'fs';
       console.log(`${x},${y}`, asset);
     }
 
-    fs.writeFileSync('./assets.json', JSON.stringify(map, null, 2));
+    fs.writeFileSync('./view/assets.json', JSON.stringify(map, null, 2));
 
     sleep(500);
   }
 
-  fs.writeFileSync('./assets.json', JSON.stringify(map, null, 2));
+  fs.writeFileSync('./view/assets.json', JSON.stringify(map, null, 2));
 })();
 
 function sleep(ms: number) {
