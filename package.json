@@ -5,7 +5,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev": "tsnd --transpile-only --respawn --no-notify --ignore-watch node_modules ./src/index.ts",
+    "dev": "tsnd --transpile-only --respawn --no-notify --ignore-watch node_modules --ignore-watch view ./src/index.ts",
     "start": "node ./dist/index.js",
     "build": "yarn tsc",
     "deploy": "yarn && yarn build && yarn start"

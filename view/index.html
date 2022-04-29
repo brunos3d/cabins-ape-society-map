@@ -23,10 +23,15 @@
         justify-content: center;
       }
 
-      select {
+      select,
+      input {
         margin-bottom: 16px;
         padding: 10px;
         font-size: 16px;
+      }
+
+      input {
+        margin-left: 8px;
       }
 
       canvas {
@@ -44,16 +49,34 @@
         border: 1px solid #636363;
         border-radius: 10px;
       }
+
+      .row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .row:nth-child() + .row:nth-child() {
+        margin-left: 16px;
+      }
     </style>
 
-    <select name="View Trait Mode" onchange="onViewModeChange(event)">
-      <option value="size">size</option>
-      <option value="street">street</option>
-      <option value="district">district</option>
-      <option value="slvd rating">slvd rating</option>
-      <option value="buy now">buy now</option>
-      <!-- <option value="test">test</option> -->
-    </select>
+    <div class="row">
+      <select id="viewMode" name="View Trait Mode" onchange="onViewModeChange(event)">
+        <option value="size">size</option>
+        <option value="street">street</option>
+        <option value="district">district</option>
+        <option value="slvd rating">slvd rating</option>
+        <option value="buy now">buy now</option>
+        <option value="test slvd rating">test slvd rating</option>
+        <!-- <option value="test">test</option> -->
+      </select>
+
+      <input id="xCoord" type="number" step="1" value="0" min="0" max="100" onchange="onCoordChange(event)" />
+
+      <input id="yCoord" type="number" step="1" value="0" min="0" max="100" onchange="onCoordChange(event)" />
+    </div>
 
     <canvas id="canvas"></canvas>
 
@@ -65,6 +88,7 @@
 
     <script>
       let onViewModeChange = () => {};
+      let onCoordChange = () => {};
       (async () => {
         const response = await fetch('assets.json');
         const assets = await response.json();
@@ -95,11 +119,21 @@
         // bind function scope
         onViewModeChange = function (event) {
           const viewMode = event.target.value;
-          render(viewMode);
+          const xCoordInput = document.querySelector('#xCoord');
+          const yCoordInput = document.querySelector('#yCoord');
+          render(viewMode, xCoordInput.value, yCoordInput.value);
           console.log(viewMode);
         };
 
-        async function render(viewMode) {
+        onCoordChange = function (event) {
+          const viewModeEl = document.querySelector('#viewMode');
+          const xCoordInput = document.querySelector('#xCoord');
+          const yCoordInput = document.querySelector('#yCoord');
+          const viewMode = viewModeEl.value;
+          render(viewMode, xCoordInput.value, yCoordInput.value);
+        };
+
+        async function render(viewMode, highlightX, highlightY) {
           const colors = {};
 
           // clear
@@ -142,12 +176,31 @@
                 ctx.fillStyle = colors?.[slvdRating] || (colors[slvdRating] = `#${colorNumber.toString(16).padStart(6, '0')}`);
               }
 
+              // // test slvd rating
+              if (viewMode === 'test slvd rating') {
+                // A-Z
+                const slvdRating = asset.traits['slvd rating'].toUpperCase();
+                ctx.fillStyle = colors?.[slvdRating] || (colors[slvdRating] = lerpColor('#d35b53', '#83a771', (slvdRating.charCodeAt(0) - 65) / 26));
+              }
+
               if (viewMode === 'buy now') {
                 if (asset.listing_link) {
                   ctx.fillStyle = '#5ee7ff';
                 } else {
                   ctx.fillStyle = '#ff4040';
                 }
+              }
+
+              if (highlightX == x && highlightY == y) {
+                setTimeout(() => {
+                  ctx.beginPath();
+                  ctx.lineWidth = 5;
+                  ctx.strokeStyle = 'red';
+                  ctx.arc(coordX + squareSize / 2, coordY + squareSize / 2, squareSize * 2, 0, 2 * Math.PI);
+                  ctx.stroke();
+                }, 5);
+
+                ctx.fillStyle = 'red';
               }
 
               // if ((asset.traits['slvd rating'] !== 'a' && asset.traits['slvd rating'] !== 'b') || !asset.listing_price || asset.listing_price > 8000) {
