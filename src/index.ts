@@ -4,7 +4,7 @@ import fs from 'fs';
 (async () => {
   const map: Record<string, any> = {};
 
-  for (let x = 1; x < 101; x++) {
+  for (let x = 100; x <= 101; x++) {
     console.log(`fetching: ${x}`);
 
     const response = await getAssetsByCoordinates(x);

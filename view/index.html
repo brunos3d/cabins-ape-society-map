@@ -141,10 +141,10 @@
           ctx.fillRect(0, 0, canvas.width, canvas.height);
 
           // draw squares for each asset
-          for (let x = 1; x < mapWidth; x++) {
-            for (let y = 1; y < mapHeight; y++) {
+          for (let x = 1; x <= mapWidth; x++) {
+            for (let y = 1; y <= mapHeight; y++) {
               const coordX = x * squareSize + x * roadSize;
-              const coordY = squareSize * mapHeight + roadSize * mapHeight - (y * squareSize + y * roadSize);
+              const coordY = squareSize * mapHeight + roadSize * mapHeight + squareSize - roadSize - (y * squareSize + y * roadSize);
 
               const asset = assets[`${x},${y}`];
 
@@ -288,7 +288,7 @@
           divPopover.style.left = `${rect.left + x + 5}px`;
 
           const relativeX = Math.floor(x / (squareSize + roadSize));
-          const relativeY = Math.floor((squareSize * mapHeight + roadSize * mapHeight + squareSize - y) / (squareSize + roadSize));
+          const relativeY = Math.floor((squareSize * mapHeight + roadSize * mapHeight + squareSize * 2 - y) / (squareSize + roadSize));
 
           const asset = assets[`${relativeX},${relativeY}`];
 
