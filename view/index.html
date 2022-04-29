@@ -4,14 +4,20 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>(Map) Cabins By The Ape Society</title>
-  </head>
+    <title>(Unofficial) Cabins By The Ape Society</title>
 
-  <body>
+    <meta property="og:title" content="Cabins By The Ape Society" />
+    <meta property="og:url" content="./heatmap.png" />
+    <meta property="og:image" content="./heatmap.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300&display=swap" rel="stylesheet" />
     <style>
       * {
         margin: 0;
         padding: 0;
+        font-family: 'Fira Code', monospace;
       }
 
       body {
@@ -57,28 +63,63 @@
         justify-content: center;
       }
 
+      .col {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .mt {
+        margin-top: 16px;
+      }
+
       .row:nth-child() + .row:nth-child() {
         margin-left: 16px;
       }
+
+      h1 {
+        margin-bottom: 16px;
+      }
+
+      .white {
+        color: #fff;
+      }
     </style>
+  </head>
 
-    <div class="row">
-      <select id="viewMode" name="View Trait Mode" onchange="onViewModeChange(event)">
-        <option value="size">size</option>
-        <option value="street">street</option>
-        <option value="district">district</option>
-        <option value="slvd rating">slvd rating</option>
-        <option value="buy now">buy now</option>
-        <option value="test slvd rating">test slvd rating</option>
-        <!-- <option value="test">test</option> -->
-      </select>
+  <body>
+    <div class="col mt">
+      <h1 class="white">This is an unofficial project</h1>
+      <p class="white">Change view mode</p>
+      <div class="row">
+        <select id="viewMode" name="View Trait Mode" onchange="onViewModeChange(event)">
+          <option value="size">size</option>
+          <option value="street">street</option>
+          <option value="district">district</option>
+          <option value="slvd rating">slvd rating</option>
+          <option value="buy now">buy now</option>
+          <option value="test slvd rating">test slvd rating</option>
+          <!-- <option value="test">test</option> -->
+        </select>
+      </div>
 
-      <input id="xCoord" type="number" step="1" value="0" min="0" max="100" onchange="onCoordChange(event)" />
+      <p class="white">Find by coords (0 = none)</p>
 
-      <input id="yCoord" type="number" step="1" value="0" min="0" max="100" onchange="onCoordChange(event)" />
+      <div class="row">
+        <input id="xCoord" type="number" step="1" value="0" min="0" max="100" onchange="onCoordChange(event)" />
+        <input id="yCoord" type="number" step="1" value="0" min="0" max="100" onchange="onCoordChange(event)" />
+      </div>
+
+      <p class="white">Click to open on JPG.store when cursor change (use "buy now" mode to better view)</p>
     </div>
 
     <canvas id="canvas"></canvas>
+
+    <div class="col mt">
+      <p class="white">Dev by: <strong>$brunodev</strong> (accepting donations)</p>
+      <p class="white">Sponsored by: <strong>$dao.dao.dao</strong></p>
+    </div>
 
     <div id="popover">
       <p id="coord">COORD</p>
