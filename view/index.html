@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      document.onload = printJSON();
+
+      async function printJSON() {
+        const response = await fetch('assets.json');
+        const assets = await response.json();
+
+        const canvas = document.querySelector('#canvas');
+        const ctx = canvas.getContext('2d');
+
+        const roadSize = 2;
+        const squareSize = 7;
+        const mapWidth = 101;
+        const mapHeight = 101;
+
+        canvas.width = mapWidth * squareSize + mapWidth * roadSize + squareSize + roadSize;
+        canvas.height = mapHeight * squareSize + mapHeight * roadSize + squareSize + roadSize;
+
+        const colors = {
+          chateau: '#fbff00',
+          estate: '#8a4021',
+          cottage: '#3dad4c',
+        };
+
+        // const colors = {};
+
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // draw squares for each asset
+        for (let x = 1; x < mapWidth; x++) {
+          for (let y = 1; y < mapHeight; y++) {
+            const asset = assets[`${x},${y}`];
+
+            if (!asset) continue;
+
+            ctx.fillStyle = colors[asset.traits['cabin size']];
+
+            // // rua
+            // ctx.fillStyle =
+            //   colors?.[asset.traits.street] || (colors[asset.traits.street] = '#' + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0'));
+
+            // // district
+            // ctx.fillStyle =
+            //   colors?.[asset.traits.district] ||
+            //   (colors[asset.traits.district] = '#' + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0'));
+
+            // // slvd rating
+            // ctx.fillStyle =
+            //   colors?.[asset.traits['slvd rating']] ||
+            //   (colors[asset.traits['slvd rating']] = '#' + ((Math.random() * 0xffffff) << 0).toString(16).padStart(6, '0'));
+
+            // if ((asset.traits['slvd rating'] !== 'a' && asset.traits['slvd rating'] !== 'b') || !asset.listing_price || asset.listing_price > 8000) {
+            //   ctx.fillStyle = '#333';
+            // }
+
+            // if (x > 90 && x < 100 && y === 66) {
+            //   console.log(asset);
+            //   ctx.fillStyle = 'red';
+            // }
+
+            // if (x === 43 && y === 9) {
+            //   ctx.fillStyle = 'red';
+            // }
+
+            // if (asset.listing_link) {
+            //   ctx.fillStyle = 'red';
+            // }
+
+            // if (asset.listing_price && asset.listing_price < 500) {
+            //   ctx.fillStyle = 'red';
+            // }
+
+            // if (
+            //   x !== 1 &&
+            //   y !== 1 &&
+            //   x !== mapWidth - 1 &&
+            //   y !== mapHeight - 1 &&
+            //   (!assets[`${x + 1},${y}`] ||
+            //     !assets[`${x - 1},${y}`] ||
+            //     !assets[`${x},${y + 1}`] ||
+            //     !assets[`${x},${y - 1}`] ||
+            //     !assets[`${x + 1},${y + 1}`] ||
+            //     !assets[`${x - 1},${y - 1}`] ||
+            //     !assets[`${x + 1},${y - 1}`] ||
+            //     !assets[`${x - 1},${y + 1}`])
+            // ) {
+            //   if (asset.listing_link) {
+            //     ctx.fillStyle = 'red';
+            //     console.log(asset.listing_link);
+            //   }
+            // }
+
+            // if (asset.traits.street === 'wright avenue') {
+            //   ctx.fillStyle = 'red';
+            // }
+
+            ctx.fillRect(x * squareSize + x * roadSize, y * squareSize + y * roadSize, squareSize, squareSize);
+          }
+        }
+
+        const divStreets = document.querySelector('#streets');
+        const pStreetName = document.querySelector('#name');
+        const pCabinCoord = document.querySelector('#coord');
+        const pCabinInfo = document.querySelector('#info');
+
+        function getCursorPosition(canvas, event) {
+          const rect = canvas.getBoundingClientRect();
+          const x = event.clientX - rect.left;
+          const y = event.clientY - rect.top;
+
+          divStreets.style.top = `${rect.top + y + 5}px`;
+          divStreets.style.left = `${rect.left + x + 5}px`;
+
+          const relativeX = Math.floor(x / (squareSize + roadSize));
+          const relativeY = Math.floor(y / (squareSize + roadSize));
+
+          const asset = assets[`${relativeX},${relativeY}`];
+
+          if (!asset) return null;
+
+          pStreetName.innerText = `street: ${asset.traits.street} / price: ${asset.listing_price || 0}`;
+          pCabinCoord.innerText = `coord (X,Y): ${relativeX},${relativeY}`;
+          pCabinInfo.innerText = `size: ${asset.traits['cabin size']} / district: ${asset.traits.district} / slvd rating: ${asset.traits['slvd rating']}`;
+
+          divStreets.style.backgroundColor = asset.listing_link ? '#8ab7ff' : '#ff928a';
+
+          return asset;
+        }
+
+        canvas.addEventListener('mousemove', function (e) {
+          getCursorPosition(canvas, e);
+        });
+
+        function openInNewTab(url) {
+          window.open(url, '_blank').focus();
+        }
+
+        canvas.addEventListener('mousedown', function (e) {
+          const asset = getCursorPosition(canvas, e);
+
+          if (!asset) return;
+
+          if (asset.listing_link) {
+            openInNewTab(asset.listing_link);
+          }
+        });
+
+        // for (const [street, color] of Object.entries(colors)) {
+        //   const node = document.createElement('a');
+
+        //   a.attribut;
+        //   node.innerText = street;
+        //   //   node.style.color = color;
+
+        //   divStreets.appendChild(node);
+        // }
+      }
+    </script>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background-color: #383838;
+        height: 200vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      canvas {
+        border: 1px solid black;
+        image-rendering: pixelated;
+      }
+
+      #streets {
+        padding: 16px;
+        pointer-events: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: white;
+        border: 1px solid red;
+        border-radius: 10px;
+      }
+    </style>
+
+    <canvas id="canvas"></canvas>
+
+    <div id="streets">
+      <p id="coord">COORD</p>
+      <p id="name">STREET_NAME</p>
+      <p id="info">INFO</p>
+    </div>
+  </body>
+</html>
