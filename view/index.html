@@ -101,6 +101,7 @@
           <option value="slvd rating">slvd rating</option>
           <option value="buy now">buy now</option>
           <option value="test slvd rating">test slvd rating</option>
+          <option value="test near landmarks">test near landmarks</option>
           <!-- <option value="test">test</option> -->
         </select>
       </div>
@@ -218,6 +219,14 @@
                 ctx.fillStyle = colors?.[slvdRating] || (colors[slvdRating] = `#${colorNumber.toString(16).padStart(6, '0')}`);
               }
 
+              if (viewMode === 'buy now') {
+                if (asset.listing_link) {
+                  ctx.fillStyle = '#5ee7ff';
+                } else {
+                  ctx.fillStyle = '#333';
+                }
+              }
+
               // // test slvd rating
               if (viewMode === 'test slvd rating') {
                 // A-Z
@@ -225,11 +234,24 @@
                 ctx.fillStyle = colors?.[slvdRating] || (colors[slvdRating] = lerpColor('#d35b53', '#83a771', (slvdRating.charCodeAt(0) - 65) / 26));
               }
 
-              if (viewMode === 'buy now') {
-                if (asset.listing_link) {
+              if (viewMode === 'test near landmarks') {
+                if (
+                  x !== 1 &&
+                  y !== 1 &&
+                  x !== mapWidth - 1 &&
+                  y !== mapHeight - 1 &&
+                  (!assets[`${x + 1},${y}`] ||
+                    !assets[`${x - 1},${y}`] ||
+                    !assets[`${x},${y + 1}`] ||
+                    !assets[`${x},${y - 1}`] ||
+                    !assets[`${x + 1},${y + 1}`] ||
+                    !assets[`${x - 1},${y - 1}`] ||
+                    !assets[`${x + 1},${y - 1}`] ||
+                    !assets[`${x - 1},${y + 1}`])
+                ) {
                   ctx.fillStyle = '#5ee7ff';
                 } else {
-                  ctx.fillStyle = '#ff4040';
+                  ctx.fillStyle = '#333';
                 }
               }
 
@@ -260,26 +282,6 @@
 
               // if (asset.listing_price && asset.listing_price < 500) {
               //   ctx.fillStyle = 'red';
-              // }
-
-              // if (
-              //   x !== 1 &&
-              //   y !== 1 &&
-              //   x !== mapWidth - 1 &&
-              //   y !== mapHeight - 1 &&
-              //   (!assets[`${x + 1},${y}`] ||
-              //     !assets[`${x - 1},${y}`] ||
-              //     !assets[`${x},${y + 1}`] ||
-              //     !assets[`${x},${y - 1}`] ||
-              //     !assets[`${x + 1},${y + 1}`] ||
-              //     !assets[`${x - 1},${y - 1}`] ||
-              //     !assets[`${x + 1},${y - 1}`] ||
-              //     !assets[`${x - 1},${y + 1}`])
-              // ) {
-              //   if (asset.listing_link) {
-              //     ctx.fillStyle = 'red';
-              //     console.log(asset.listing_link);
-              //   }
               // }
 
               // if (asset.traits.street === 'wright avenue') {
