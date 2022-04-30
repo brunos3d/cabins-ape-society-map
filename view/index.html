@@ -100,8 +100,8 @@
           <option value="district">district</option>
           <option value="slvd rating">slvd rating</option>
           <option value="buy now">buy now</option>
-          <option value="test slvd rating">test slvd rating</option>
-          <option value="test near landmarks">test near landmarks</option>
+          <option value="slvd rating experimental">slvd rating (experimental)</option>
+          <option value="near landmarks">buy now - near landmarks (experimental)</option>
           <!-- <option value="test">test</option> -->
         </select>
       </div>
@@ -227,15 +227,16 @@
                 }
               }
 
-              // // test slvd rating
-              if (viewMode === 'test slvd rating') {
+              // // slvd rating experimental
+              if (viewMode === 'slvd rating experimental') {
                 // A-Z
                 const slvdRating = asset.traits['slvd rating'].toUpperCase();
                 ctx.fillStyle = colors?.[slvdRating] || (colors[slvdRating] = lerpColor('#d35b53', '#83a771', (slvdRating.charCodeAt(0) - 65) / 26));
               }
 
-              if (viewMode === 'test near landmarks') {
+              if (viewMode === 'near landmarks') {
                 if (
+                  asset.listing_link &&
                   x !== 1 &&
                   y !== 1 &&
                   x !== mapWidth &&
