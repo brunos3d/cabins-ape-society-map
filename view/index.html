@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>(Unofficial) Cabins By The Ape Society</title>
+
+    <meta property="og:title" content="(Unofficial) Cabins By The Ape Society" />
+    <meta property="og:description" content="An interactive map with The Ape Society CNFT tiles and Cabins" />
+    <meta property="og:url" content="./heatmap.png" />
+    <meta property="og:image" content="./heatmap.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300&display=swap" rel="stylesheet" />
+
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+
+  <body>
+    <div class="col mt">
+      <h1 class="white">This is an unofficial project</h1>
+      <p class="white">Change view mode</p>
+      <div class="row">
+        <select id="viewMode" name="View Trait Mode" onchange="onViewModeChange(event)">
+          <option value="size">size</option>
+          <option value="street">street</option>
+          <option value="district">district</option>
+          <option value="slvd rating">slvd rating</option>
+          <option value="buy now">buy now</option>
+          <option value="slvd rating experimental">slvd rating (experimental)</option>
+          <option value="near landmarks">buy now - near landmarks (experimental)</option>
+        </select>
+      </div>
+
+      <p class="white">Find by coords (0 = none)</p>
+
+      <div class="row">
+        <label class="white" for="xCoord">x</label>
+        <input id="xCoord" type="number" step="1" value="0" min="0" max="100" onchange="onCoordChange(event)" />
+        <label class="white" for="yCoord">y</label>
+        <input id="yCoord" type="number" step="1" value="0" min="0" max="100" onchange="onCoordChange(event)" />
+      </div>
+
+      <p class="white">Click to open on JPG.store when cursor change (use "buy now" mode to better view)</p>
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <div class="col mt">
+      <p class="white">Dev by: <strong>$brunodev</strong> (accepting donations)</p>
+      <p class="white">Sponsored by: <strong>$dao.dao.dao</strong></p>
+    </div>
+
+    <div id="popover">
+      <p id="coord">COORD</p>
+      <p id="name">STREET_NAME</p>
+      <p id="info">INFO</p>
+    </div>
+
+    <script src="./main.js"></script>
+  </body>
+</html>
