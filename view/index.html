@@ -86,6 +86,10 @@
       .white {
         color: #fff;
       }
+
+      label {
+        margin-left: 8px;
+      }
     </style>
   </head>
 
@@ -109,7 +113,9 @@
       <p class="white">Find by coords (0 = none)</p>
 
       <div class="row">
+        <label class="white" for="xCoord">x</label>
         <input id="xCoord" type="number" step="1" value="0" min="0" max="100" onchange="onCoordChange(event)" />
+        <label class="white" for="yCoord">y</label>
         <input id="yCoord" type="number" step="1" value="0" min="0" max="100" onchange="onCoordChange(event)" />
       </div>
 
